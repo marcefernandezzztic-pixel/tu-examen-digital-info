@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tu Examen Digital — Plataforma de evaluación inteligente</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: rgba(22,32,50,0.95);
+    --surface2: rgba(30,42,64,0.8);
+    --blue: #4f9cf9;
+    --blue-dim: rgba(79,156,249,0.12);
+    --blue-border: rgba(79,156,249,0.25);
+    --emerald: #34d399;
+    --emerald-dim: rgba(52,211,153,0.1);
+    --amber: #fbbf24;
+    --red: #f87171;
+    --purple: #a78bfa;
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    line-height: 1.65;
+  }
+
+  /* subtle dot grid */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .content { position: relative; z-index: 1; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 5rem 1.5rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 500px;
+    background: radial-gradient(ellipse at center, rgba(79,156,249,0.09) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .badge-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(79,156,249,0.1);
+    border: 1px solid rgba(79,156,249,0.28);
+    border-radius: 999px;
+    padding: 0.4rem 1.1rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #7ab8fb;
+    margin-bottom: 2.2rem;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 8vw, 5.8rem);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.6rem;
+    color: #f0f6ff;
+    animation: fadeUp 0.5s 0.1s ease both;
+  }
+
+  .hero h1 .accent {
+    background: linear-gradient(130deg, #4f9cf9 0%, #a78bfa 55%, #34d399 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: var(--text2);
+    max-width: 540px;
+    margin: 0 auto 2.8rem;
+    font-weight: 400;
+    line-height: 1.7;
+    animation: fadeUp 0.5s 0.2s ease both;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeUp 0.5s 0.3s ease both;
+  }
+
+  /* ── BUTTONS ── */
+  .btn-primary {
+    background: linear-gradient(135deg, #2563eb 0%, #4f9cf9 100%);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.92rem;
+    padding: 0.9rem 2.1rem;
+    border-radius: 13px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    letter-spacing: 0.02em;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 28px rgba(79,156,249,0.28);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 40px rgba(79,156,249,0.42); }
+
+  .btn-ghost {
+    color: var(--text2);
+    font-weight: 500;
+    font-size: 0.92rem;
+    padding: 0.9rem 2.1rem;
+    border-radius: 13px;
+    border: 1px solid var(--border2);
+    background: transparent;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.25); color: #f0f6ff; }
+
+  /* ── LAYOUT ── */
+  section { padding: 5.5rem 1.5rem; max-width: 1080px; margin: 0 auto; }
+
+  .section-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 0.85rem;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.9rem, 4vw, 2.75rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: #f0f6ff;
+    margin-bottom: 1.2rem;
+  }
+
+  .section-body {
+    color: var(--text2);
+    font-size: 1.05rem;
+    max-width: 520px;
+    font-weight: 400;
+    line-height: 1.75;
+  }
+
+  .glass {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+  }
+
+  /* ── MOCK SCREENS ── */
+  .mock-container {
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 32px 72px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04);
+  }
+
+  .mock-bar {
+    background: rgba(8,12,22,0.98);
+    padding: 0.55rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .mock-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .mock-url {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border-radius: 5px;
+    padding: 0.22rem 0.7rem;
+    font-size: 0.62rem;
+    color: var(--text3);
+    font-family: monospace;
+    margin: 0 0.5rem;
+  }
+
+  /* ── STUDENT SCREEN ── */
+  .screen-student {
+    background: linear-gradient(160deg, #080c14 0%, #0f172a 100%);
+    padding: 2rem 1.5rem;
+    min-height: 360px;
+  }
+
+  .student-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(59,130,246,0.12);
+    border: 1px solid rgba(59,130,246,0.25);
+    border-radius: 999px;
+    padding: 0.3rem 0.9rem;
+    font-size: 0.65rem;
+    color: #60a5fa;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+  }
+
+  .student-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 0.25rem;
+    color: #f1f5f9;
+  }
+
+  .student-teacher { font-size: 0.72rem; color: #64748b; margin-bottom: 1.5rem; }
+
+  .student-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .student-input {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.5);
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .student-input.full { grid-column: 1 / -1; }
+
+  .student-readonly {
+    background: rgba(59,130,246,0.05);
+    border-color: rgba(59,130,246,0.15);
+    color: rgba(148,163,184,0.7);
+  }
+
+  .btn-launch {
+    width: 100%;
+    background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+    color: white;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 0.9rem;
+    border-radius: 12px;
+    border: none;
+    margin-top: 0.5rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    box-shadow: 0 4px 20px rgba(59,130,246,0.3);
+  }
+
+  /* ── TEACHER PANEL ── */
+  .screen-teacher {
+    background: #080c14;
+    padding: 1.5rem;
+    min-height: 400px;
+  }
+
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .panel-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: #f1f5f9;
+  }
+
+  .panel-user { display: flex; align-items: center; gap: 0.5rem; }
+
+  .panel-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: linear-gradient(135deg, #2563eb, #8b5cf6);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.6rem; font-weight: 700; color: white;
+  }
+
+  .panel-name { font-size: 0.7rem; font-weight: 600; color: #e2e8f0; }
+  .panel-badge {
+    font-size: 0.55rem; font-weight: 700; text-transform: uppercase;
+    padding: 0.15rem 0.5rem; border-radius: 999px;
+    background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.35); color: #10b981;
+  }
+
+  .panel-grid { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 0.75rem; }
+
+  .panel-card {
+    background: rgba(15,23,42,0.8);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px; padding: 0.9rem;
+  }
+
+  .panel-card-title {
+    font-size: 0.55rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.1em; margin-bottom: 0.75rem;
+  }
+
+  .panel-input {
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 7px; padding: 0.4rem 0.6rem;
+    font-size: 0.6rem; color: rgba(255,255,255,0.5);
+    margin-bottom: 0.4rem; font-family: 'DM Sans', sans-serif;
+  }
+
+  .panel-btn {
+    width: 100%; border-radius: 7px; padding: 0.35rem;
+    font-size: 0.55rem; font-weight: 700; text-transform: uppercase;
+    border: none; cursor: default; margin-bottom: 0.3rem;
+  }
+
+  .panel-btn.blue { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.2); }
+  .panel-btn.emerald { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.2); }
+  .panel-btn.purple { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.2); }
+  .panel-btn.red { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.15); }
+
+  .tabs-row { display: flex; gap: 0.35rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+
+  .tab { padding: 0.25rem 0.6rem; border-radius: 6px; font-size: 0.55rem; font-weight: 700; text-transform: uppercase; border: none; cursor: default; }
+  .tab.active { background: rgba(59,130,246,0.3); color: #93c5fd; border: 1px solid rgba(59,130,246,0.4); }
+  .tab.inactive { background: rgba(255,255,255,0.03); color: #64748b; border: 1px solid rgba(255,255,255,0.06); }
+
+  .question-row {
+    background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 8px; padding: 0.5rem 0.7rem; margin-bottom: 0.3rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .q-text { font-size: 0.58rem; color: rgba(255,255,255,0.75); max-width: 85%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .q-del { font-size: 0.55rem; color: #f87171; opacity: 0.6; }
+
+  .link-box {
+    background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 10px; padding: 0.6rem 0.75rem; margin-bottom: 0.75rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+  }
+
+  .link-label { font-size: 0.5rem; font-weight: 700; text-transform: uppercase; color: #34d399; margin-bottom: 0.2rem; }
+  .link-url { font-size: 0.55rem; color: rgba(148,163,184,0.7); font-family: monospace; }
+  .link-copy { font-size: 0.5rem; font-weight: 700; text-transform: uppercase; background: rgba(16,185,129,0.2); border: 1px solid rgba(16,185,129,0.3); color: #34d399; border-radius: 6px; padding: 0.3rem 0.6rem; white-space: nowrap; }
+
+  /* ── HERO FEATURE (IA card) ── */
+  .ia-hero-card {
+    background: linear-gradient(135deg, rgba(79,156,249,0.08) 0%, rgba(167,139,250,0.08) 100%);
+    border: 1px solid rgba(79,156,249,0.2);
+    border-radius: 24px;
+    padding: 2.5rem 2rem;
+    margin-top: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ia-hero-card::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    background: radial-gradient(ellipse, rgba(167,139,250,0.12), transparent 70%);
+    pointer-events: none;
+  }
+
+  .ia-flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+
+  .ia-step {
+    flex: 1;
+    min-width: 160px;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    border-radius: 16px;
+  }
+
+  .ia-step.input-step {
+    background: rgba(79,156,249,0.08);
+    border: 1px solid rgba(79,156,249,0.2);
+  }
+
+  .ia-step.output-step {
+    background: rgba(167,139,250,0.08);
+    border: 1px solid rgba(167,139,250,0.2);
+  }
+
+  .ia-step.magic-step {
+    background: rgba(52,211,153,0.06);
+    border: 1px solid rgba(52,211,153,0.18);
+    min-width: 120px;
+    flex: 0.7;
+  }
+
+  .ia-arrow {
+    font-size: 1.5rem;
+    color: var(--text3);
+    padding: 0 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .ia-step-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+  .ia-step-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+
+  .ia-step-label.blue { color: var(--blue); }
+  .ia-step-label.purple { color: var(--purple); }
+  .ia-step-label.emerald { color: var(--emerald); }
+
+  .ia-step-desc { font-size: 0.8rem; color: var(--text2); line-height: 1.5; }
+
+  /* ── ANTI-FRAUDE ── */
+  .antifraude-card {
+    background: linear-gradient(135deg, rgba(248,113,113,0.06) 0%, rgba(251,191,36,0.04) 100%);
+    border: 1px solid rgba(248,113,113,0.2);
+    border-radius: 24px;
+    padding: 2.5rem 2rem;
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .falta-counter {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(248,113,113,0.25);
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .falta-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--red);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .falta-label { font-size: 0.72rem; color: var(--text2); font-weight: 500; }
+
+  .falta-rules { list-style: none; }
+  .falta-rules li {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem; color: var(--text2);
+  }
+  .falta-rules li:last-child { border-bottom: none; }
+  .falta-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.1rem; }
+
+  /* ── PDF ── */
+  .pdf-card {
+    background: linear-gradient(135deg, rgba(251,191,36,0.06) 0%, rgba(79,156,249,0.04) 100%);
+    border: 1px solid rgba(251,191,36,0.2);
+    border-radius: 24px;
+    padding: 2.5rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+    margin-top: 3rem;
+  }
+
+  .pdf-icon-big {
+    font-size: 4rem;
+    filter: drop-shadow(0 4px 16px rgba(251,191,36,0.3));
+    flex-shrink: 0;
+    animation: float 4s ease-in-out infinite;
+  }
+
+  /* ── FEATURES GRID ── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1.1rem;
+    margin-top: 3rem;
+  }
+
+  .feature-card {
+    padding: 1.6rem;
+    border-radius: 18px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(79,156,249,0.22);
+  }
+
+  .feature-icon { font-size: 1.8rem; margin-bottom: 0.85rem; }
+
+  .feature-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem; font-weight: 700; margin-bottom: 0.45rem; color: #f0f6ff;
+  }
+
+  .feature-desc { font-size: 0.84rem; color: var(--text2); line-height: 1.6; }
+
+  /* ── COMPARISON ── */
+  .compare-table { width: 100%; border-collapse: collapse; margin-top: 2rem; font-size: 0.88rem; }
+
+  .compare-table th {
+    text-align: left; padding: 0.85rem 1.1rem;
+    font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--border2);
+  }
+
+  .compare-table th:first-child { color: var(--text2); }
+  .compare-table th.ours { color: var(--blue); }
+  .compare-table th.theirs { color: var(--text3); }
+
+  .compare-table td {
+    padding: 0.78rem 1.1rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+    color: var(--text2);
+    font-size: 0.86rem;
+  }
+
+  .compare-table td:first-child { color: #c8d8f0; font-weight: 500; }
+  .compare-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .check { color: var(--emerald); font-weight: 700; }
+  .cross { color: var(--text3); }
+  .partial { color: var(--amber); font-size: 0.78rem; }
+
+  /* ── PHONE ── */
+  .phone-mockup {
+    width: 210px; height: 390px;
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 32px;
+    background: #080c14; position: relative; overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.04);
+    flex-shrink: 0;
+  }
+
+  .phone-notch {
+    width: 76px; height: 18px; background: #080c14;
+    border-radius: 0 0 12px 12px; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    z-index: 2; border: 2px solid rgba(255,255,255,0.1); border-top: none;
+  }
+
+  .phone-screen {
+    position: absolute; inset: 3px; border-radius: 28px;
+    background: linear-gradient(160deg, #0a0f1e 0%, #0f1a2e 100%);
+    overflow: hidden; padding: 2rem 0.75rem 0.75rem;
+  }
+
+  .phone-q-title {
+    font-family: 'Syne', sans-serif; font-size: 0.52rem; font-weight: 800;
+    color: #60a5fa; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;
+  }
+
+  .phone-q-text {
+    font-size: 0.62rem; color: #e2e8f0; font-weight: 500; margin-bottom: 0.75rem; line-height: 1.4;
+  }
+
+  .phone-option {
+    background: rgba(30,41,59,0.6); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px; padding: 0.4rem 0.6rem; font-size: 0.53rem;
+    color: rgba(255,255,255,0.7); margin-bottom: 0.28rem;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+
+  .phone-option.selected { background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.35); color: #93c5fd; }
+
+  .phone-opt-letter {
+    width: 14px; height: 14px; border-radius: 4px;
+    background: rgba(255,255,255,0.06); display: flex; align-items: center;
+    justify-content: center; font-size: 0.48rem; font-weight: 700; flex-shrink: 0;
+  }
+
+  .phone-option.selected .phone-opt-letter { background: #3b82f6; color: white; }
+
+  .phone-timer { position: absolute; top: 0.5rem; right: 0.75rem; font-size: 0.52rem; font-weight: 700; color: #fbbf24; }
+
+  .phone-progress { height: 2px; background: rgba(255,255,255,0.05); border-radius: 999px; margin-bottom: 0.7rem; overflow: hidden; }
+  .phone-progress-fill { height: 100%; width: 60%; background: linear-gradient(90deg, #2563eb, #8b5cf6); border-radius: 999px; }
+
+  .phone-falta {
+    background: rgba(248,113,113,0.12); border: 1px solid rgba(248,113,113,0.3);
+    border-radius: 7px; padding: 0.35rem 0.6rem; margin-top: 0.5rem;
+    font-size: 0.5rem; color: #fca5a5; font-weight: 700;
+    display: flex; align-items: center; gap: 0.35rem;
+  }
+
+  /* ── PRICING ── */
+  .pricing-card {
+    border-radius: 24px;
+    padding: 2.5rem 2.2rem;
+    border: 1px solid rgba(79,156,249,0.25);
+    background: linear-gradient(135deg, rgba(79,156,249,0.06) 0%, rgba(167,139,250,0.05) 100%);
+    max-width: 420px;
+    margin: 3rem auto 0;
+    position: relative;
+  }
+
+  .plan-name {
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--blue); margin-bottom: 1rem;
+  }
+
+  .plan-price {
+    font-family: 'Syne', sans-serif;
+    font-size: 3rem; font-weight: 900; line-height: 1;
+    color: #f0f6ff; margin-bottom: 0.2rem;
+  }
+
+  .plan-period { font-size: 0.82rem; color: var(--text2); margin-bottom: 1.25rem; }
+
+  .plan-trial {
+    display: inline-block;
+    background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.25);
+    color: var(--emerald); font-size: 0.72rem; font-weight: 700;
+    padding: 0.3rem 0.9rem; border-radius: 999px; margin-bottom: 1.75rem;
+  }
+
+  .plan-features { list-style: none; font-size: 0.88rem; color: var(--text2); }
+  .plan-features li { padding: 0.45rem 0; display: flex; align-items: flex-start; gap: 0.6rem; border-bottom: 1px solid var(--border); }
+  .plan-features li:last-child { border-bottom: none; }
+  .plan-features li::before { content: '✓'; color: var(--emerald); font-weight: 700; flex-shrink: 0; margin-top: 0.05rem; }
+
+  /* ── QUOTE ── */
+  .quote-block {
+    border-left: 3px solid var(--blue);
+    padding: 1.4rem 1.8rem;
+    background: rgba(79,156,249,0.05);
+    border-radius: 0 14px 14px 0;
+    margin: 2rem 0;
+  }
+
+  .quote-text {
+    font-size: 1.1rem; font-style: italic;
+    color: #c8d8f0; line-height: 1.65;
+    font-weight: 300;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
+    margin: 0 1.5rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 1.5rem;
+    text-align: center;
+    color: var(--text3);
+    font-size: 0.82rem;
+    line-height: 1.8;
+  }
+
+  footer strong { color: var(--text2); }
+
+  /* ── REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  @keyframes pulse-red {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(248,113,113,0); }
+    50% { box-shadow: 0 0 0 8px rgba(248,113,113,0.08); }
+  }
+
+  .pulse-red { animation: pulse-red 2.5s ease-in-out infinite; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    .panel-grid { grid-template-columns: 1fr; }
+    .student-form { grid-template-columns: 1fr; }
+    .student-input.full { grid-column: auto; }
+    .antifraude-card { grid-template-columns: 1fr; }
+    .ia-flow { flex-direction: column; align-items: stretch; }
+    .ia-arrow { transform: rotate(90deg); text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="content">
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-glow"></div>
+
+  <div class="badge-top">
+    <span>🇦🇷</span> Hecho por docentes, para docentes argentinos
+  </div>
+
+  <h1>
+    Tu Examen<br>
+    <span class="accent">Digital</span>
+  </h1>
+
+  <p class="hero-sub">
+    Escribís la pregunta y la respuesta correcta.<br>
+    La inteligencia artificial hace todo lo demás.
+  </p>
+
+  <div style="margin-top:2.5rem;display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeUp 0.5s 0.3s ease both;">
+
+    <div style="background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.18);border-radius:16px;padding:1.25rem 1.5rem;max-width:180px;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:0.5rem;">⏱️</div>
+      <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:900;color:#34d399;line-height:1;">−15 min</div>
+      <div style="font-size:0.75rem;color:#94a3b8;margin-top:0.35rem;line-height:1.5;">de redacción<br>por examen</div>
+    </div>
+
+    <div style="background:rgba(79,156,249,0.07);border:1px solid rgba(79,156,249,0.18);border-radius:16px;padding:1.25rem 1.5rem;max-width:180px;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:0.5rem;">📝</div>
+      <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:900;color:#4f9cf9;line-height:1;">0 min</div>
+      <div style="font-size:0.75rem;color:#94a3b8;margin-top:0.35rem;line-height:1.5;">de corrección<br>manual</div>
+    </div>
+
+    <div style="background:rgba(167,139,250,0.07);border:1px solid rgba(167,139,250,0.18);border-radius:16px;padding:1.25rem 1.5rem;max-width:180px;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:0.5rem;">☕</div>
+      <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:900;color:#a78bfa;line-height:1;">+tiempo</div>
+      <div style="font-size:0.75rem;color:#94a3b8;margin-top:0.35rem;line-height:1.5;">para lo que<br>realmente importa</div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ── CELULAR ── -->
+<section>
+  <div style="display:flex;align-items:center;gap:4rem;flex-wrap:wrap;">
+    <div class="reveal" style="flex:1;min-width:260px;">
+      <p class="section-label">📱 El celular en el aula</p>
+      <h2 class="section-title">El problema nunca fue<br>el celular.</h2>
+      <p class="section-body" style="margin-bottom:1.5rem;">
+        Era no tener qué hacer con él. Esta plataforma convierte el dispositivo del alumno en la herramienta del examen — y si intenta salir a otra app, lo detecta.
+      </p>
+      <div class="quote-block">
+        <p class="quote-text">"Guarden el celu." ¿Y si en vez de eso decís <strong style="color:#f0f6ff;">"saquen el celu, empezamos"</strong>?</p>
+      </div>
+      <ul style="list-style:none;font-size:0.9rem;color:var(--text2);margin-top:1rem;">
+        <li style="padding:0.4rem 0;display:flex;align-items:center;gap:0.6rem;"><span style="color:var(--emerald);font-weight:700;">✓</span> Funciona en cualquier celular con Chrome o Edge</li>
+        <li style="padding:0.4rem 0;display:flex;align-items:center;gap:0.6rem;"><span style="color:var(--emerald);font-weight:700;">✓</span> Detecta si abren WhatsApp, Instagram u otra app</li>
+        <li style="padding:0.4rem 0;display:flex;align-items:center;gap:0.6rem;"><span style="color:var(--emerald);font-weight:700;">✓</span> Sin descargas, sin cuentas de alumno</li>
+        <li style="padding:0.4rem 0;display:flex;align-items:center;gap:0.6rem;"><span style="color:var(--emerald);font-weight:700;">✓</span> Compatible con celulares de gama baja</li>
+      </ul>
+    </div>
+
+    <div class="reveal" style="display:flex;justify-content:center;animation:float 4s ease-in-out infinite;">
+      <div class="phone-mockup">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="phone-timer">⏱ 18:42</div>
+          <div class="phone-q-title">Pregunta 6 de 10</div>
+          <div class="phone-progress"><div class="phone-progress-fill"></div></div>
+          <div class="phone-q-text">¿Cuál función de Excel permite sumar un rango de celdas?</div>
+          <div class="phone-option"><div class="phone-opt-letter">A</div>CONTAR()</div>
+          <div class="phone-option selected"><div class="phone-opt-letter">B</div>SUMA()</div>
+          <div class="phone-option"><div class="phone-opt-letter">C</div>PROMEDIO()</div>
+          <div class="phone-option"><div class="phone-opt-letter">D</div>MAX()</div>
+          <div class="phone-falta">⚠️ Falta registrada — -1 pto en nota final</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── IA: EL DIFERENCIAL PRINCIPAL ── -->
+<section id="como-funciona">
+  <div class="reveal">
+    <p class="section-label">⭐ El diferencial clave</p>
+    <h2 class="section-title">Vos ponés el conocimiento.<br>La IA arma el examen.</h2>
+    <p class="section-body">
+      Solo necesitás saber tu materia. Escribís la pregunta y la respuesta correcta — la inteligencia artificial genera automáticamente tres opciones incorrectas, calibradas para que sean plausibles pero claramente erróneas.
+    </p>
+  </div>
+
+  <div class="ia-hero-card reveal">
+    <p style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.25rem;">Así de simple es el flujo</p>
+    <div class="ia-flow">
+
+      <div class="ia-step input-step">
+        <div class="ia-step-icon">✍️</div>
+        <div class="ia-step-label blue">Vos escribís</div>
+        <div class="ia-step-desc">
+          <strong style="color:#c8d8f0;">Pregunta:</strong> ¿Qué función suma un rango en Excel?<br><br>
+          <strong style="color:#c8d8f0;">Respuesta correcta:</strong> SUMA()
+        </div>
+      </div>
+
+      <div class="ia-arrow">→</div>
+
+      <div class="ia-step magic-step">
+        <div class="ia-step-icon">🪄</div>
+        <div class="ia-step-label emerald">IA genera</div>
+        <div class="ia-step-desc">Tres distractores inteligentes, ajustados a la materia</div>
+      </div>
+
+      <div class="ia-arrow">→</div>
+
+      <div class="ia-step output-step">
+        <div class="ia-step-icon">📋</div>
+        <div class="ia-step-label purple">Pregunta lista</div>
+        <div class="ia-step-desc">
+          A) SUMA() ✓<br>
+          B) CONTAR()<br>
+          C) PROMEDIO()<br>
+          D) MAX()
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; gap: 1.5rem; flex-wrap: wrap;">
+      <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.83rem; color:var(--text2);">
+        <span style="color:var(--emerald);">✓</span> Sin conocimientos técnicos
+      </div>
+      <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.83rem; color:var(--text2);">
+        <span style="color:var(--emerald);">✓</span> Funciona para cualquier materia
+      </div>
+      <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.83rem; color:var(--text2);">
+        <span style="color:var(--emerald);">✓</span> Banco ilimitado de preguntas
+      </div>
+      <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.83rem; color:var(--text2);">
+        <span style="color:var(--emerald);">✓</span> También podés importar desde Excel
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── SCREENS ── -->
+<section>
+  <div class="reveal">
+    <p class="section-label">Dos vistas, una plataforma</p>
+    <h2 class="section-title">Lo que ve el docente.<br>Lo que ve el alumno.</h2>
+  </div>
+
+  <!-- STUDENT -->
+  <div class="reveal" style="margin-top: 2.5rem; margin-bottom: 2rem;">
+    <p style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 0.75rem;">📱 Pantalla del alumno — accede con link, sin cuenta</p>
+    <div class="mock-container">
+      <div class="mock-bar">
+        <div class="mock-dot" style="background:#ef4444;"></div>
+        <div class="mock-dot" style="background:#f59e0b;"></div>
+        <div class="mock-dot" style="background:#10b981;"></div>
+        <div class="mock-url">plataforma-examen-marcelo.web.app/?docente=uid123</div>
+      </div>
+      <div class="screen-student">
+        <div class="student-badge">
+          <span style="width:6px;height:6px;border-radius:50%;background:#10b981;display:inline-block;"></span>
+          Modo Examen Activo
+        </div>
+        <div class="student-title">TIC — Eje 1°: Excel Básico</div>
+        <div class="student-teacher">Prof. Fernández Mosri · 3° año 2° División</div>
+        <div class="student-form">
+          <input class="student-input" placeholder="Nombre" readonly>
+          <input class="student-input" placeholder="Apellido" readonly>
+          <input class="student-input" placeholder="DNI" readonly>
+          <input class="student-input student-readonly" value="E.E.T. N° 4-016" readonly>
+          <input class="student-input student-readonly full" value="Escuela E.E.T. N° 4-016 · 3° · 2° · Prof. Fernández Mosri" readonly>
+        </div>
+        <button class="btn-launch">▶ Comenzar Examen</button>
+        <p style="font-size:0.6rem;color:#475569;text-align:center;margin-top:0.75rem;font-style:italic;">
+          Al iniciar, el sistema detecta cualquier intento de salir del examen y registra la incidencia.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEACHER -->
+  <div class="reveal">
+    <p style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-bottom:0.75rem;">🖥️ Panel del docente — gestión completa desde cualquier dispositivo</p>
+    <div class="mock-container">
+      <div class="mock-bar">
+        <div class="mock-dot" style="background:#ef4444;"></div>
+        <div class="mock-dot" style="background:#f59e0b;"></div>
+        <div class="mock-dot" style="background:#10b981;"></div>
+        <div class="mock-url">plataforma-examen-marcelo.web.app — Panel Docente</div>
+      </div>
+      <div class="screen-teacher">
+        <div class="panel-header">
+          <div class="panel-logo">📋 PLATAFORMA TIC <span style="color:#4f9cf9;">2026</span></div>
+          <div class="panel-user">
+            <div class="panel-avatar">MF</div>
+            <div>
+              <div class="panel-name">Prof. Fernández Mosri</div>
+              <div style="display:flex;gap:0.35rem;margin-top:0.15rem;">
+                <span class="panel-badge">Activo</span>
+                <span style="font-size:0.55rem;color:#64748b;">14 días restantes</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="link-box">
+          <div>
+            <div class="link-label">🔗 Tu Link de Examen — compartí con tus alumnos</div>
+            <div class="link-url">plataforma-examen-marcelo.web.app/?docente=Q6CQ1fDAkqcNVUXT34vY…</div>
+          </div>
+          <div class="link-copy">Copiar</div>
+        </div>
+        <div class="panel-grid">
+          <div class="panel-card">
+            <div class="panel-card-title" style="color:#60a5fa;">⚙️ Institucional</div>
+            <input class="panel-input" value="Prof. Fernández Mosri" readonly>
+            <input class="panel-input" value="E.E.T. N° 4-016" readonly>
+            <input class="panel-input" value="TIC — Eje 1°: Excel" readonly>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem;margin-bottom:0.4rem;">
+              <select class="panel-input" style="margin:0;"><option>3°</option></select>
+              <select class="panel-input" style="margin:0;"><option>2°</option></select>
+            </div>
+            <button class="panel-btn emerald">💾 Guardar Config</button>
+            <button class="panel-btn blue">📄 Reporte PDF</button>
+            <button class="panel-btn red">🗑️ Borrar Banco</button>
+          </div>
+          <div class="panel-card">
+            <div class="panel-card-title" style="color:#34d399;">✏️ Carga Asistida</div>
+            <textarea class="panel-input" rows="3" style="resize:none;height:56px;" placeholder="Escriba la pregunta..."></textarea>
+            <input class="panel-input" value="Escribí la respuesta correcta" readonly style="color:rgba(52,211,153,0.6);border-color:rgba(52,211,153,0.15);">
+            <button class="panel-btn purple">🪄 Generar Falsas con IA</button>
+            <button class="panel-btn emerald">➕ Guardar Pregunta</button>
+          </div>
+          <div class="panel-card">
+            <div class="tabs-row">
+              <button class="tab active">📋 Banco (12)</button>
+              <button class="tab inactive">📝 Exámenes</button>
+              <button class="tab inactive">📊 Resultados</button>
+              <button class="tab inactive">📈 Estadísticas</button>
+            </div>
+            <div class="question-row"><span class="q-text">¿Qué es una hoja de cálculo?</span><span class="q-del">🗑</span></div>
+            <div class="question-row"><span class="q-text">¿Cuál función suma un rango en Excel?</span><span class="q-del">🗑</span></div>
+            <div class="question-row"><span class="q-text">¿Qué hace la función PROMEDIO?</span><span class="q-del">🗑</span></div>
+            <div class="question-row"><span class="q-text">¿Cómo se llama la barra de fórmulas?</span><span class="q-del">🗑</span></div>
+            <div class="question-row"><span class="q-text">¿Qué formato aplica negrita en Excel?</span><span class="q-del">🗑</span></div>
+            <div style="text-align:center;margin-top:0.5rem;"><span style="font-size:0.55rem;color:#64748b;">+7 preguntas más en el banco</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── ANTI-TRAMPA ── -->
+<section>
+  <div class="reveal">
+    <p class="section-label">🔒 Sistema anti-trampa</p>
+    <h2 class="section-title">Cada intento de trampa<br>queda registrado y descuenta puntos.</h2>
+    <p class="section-body">
+      Si el alumno intenta abrir WhatsApp, Instagram, el buscador o cualquier otra aplicación mientras rinde, el sistema lo detecta al instante.
+    </p>
+  </div>
+
+  <div class="antifraude-card reveal">
+    <div>
+      <ul class="falta-rules">
+        <li>
+          <span class="falta-icon">👁️</span>
+          <span><strong style="color:#f0f6ff;">Detección inmediata</strong> — el sistema monitorea en tiempo real si el alumno sale de la pantalla del examen.</span>
+        </li>
+        <li>
+          <span class="falta-icon">🔔</span>
+          <span><strong style="color:#f0f6ff;">Alerta sonora</strong> — se activa un tono de advertencia audible para el docente cada vez que hay una incidencia.</span>
+        </li>
+        <li>
+          <span class="falta-icon">📋</span>
+          <span><strong style="color:#f0f6ff;">Registro de faltas</strong> — cada salida queda anotada como falta en el informe de resultados con hora y número de intento.</span>
+        </li>
+        <li>
+          <span class="falta-icon">📉</span>
+          <span><strong style="color:#f0f6ff;">Descuento automático de puntos</strong> — las faltas se descuentan de la nota final. El alumno lo sabe antes de empezar.</span>
+        </li>
+        <li>
+          <span class="falta-icon">🆔</span>
+          <span><strong style="color:#f0f6ff;">Bloqueo por DNI</strong> — ningún alumno puede rendir dos veces el mismo examen en la misma sesión.</span>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="falta-counter pulse-red" style="margin-bottom:1rem;">
+        <div class="falta-number">🕵️</div>
+        <div style="font-size:1.1rem;font-weight:800;color:#f87171;font-family:'Syne',sans-serif;margin-bottom:0.25rem;">INCIDENCIA REGISTRADA</div>
+        <div class="falta-label">El alumno abandonó la pantalla del examen</div>
+      </div>
+      <div class="falta-counter">
+        <div class="falta-number" style="font-size:2.5rem;">-2 pts</div>
+        <div class="falta-label">Descuento aplicado automáticamente<br>a la nota final</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── PDF ── -->
+<section>
+  <div class="reveal">
+    <p class="section-label">📄 Impresión y exportación</p>
+    <h2 class="section-title">El examen en papel,<br>en un clic.</h2>
+  </div>
+
+  <div class="pdf-card reveal">
+    <div class="pdf-icon-big">📄</div>
+    <div style="flex:1;">
+      <h3 style="font-family:'Syne',sans-serif; font-size:1.4rem; font-weight:800; color:#f0f6ff; margin-bottom:0.75rem;">Imprimí el examen en PDF</h3>
+      <p style="color:var(--text2); font-size:0.95rem; line-height:1.75; margin-bottom:1.25rem;">
+        ¿Tenés alumnos sin celular o preferís tomar el examen en papel? Con un solo clic generás un PDF listo para imprimir con todas las preguntas, las opciones y el encabezado institucional.
+      </p>
+      <ul style="list-style:none; font-size:0.88rem; color:var(--text2);">
+        <li style="display:flex;align-items:center;gap:0.6rem;padding:0.35rem 0;">
+          <span style="color:var(--amber);font-weight:700;">✓</span> Encabezado con nombre del docente, escuela, curso y materia
+        </li>
+        <li style="display:flex;align-items:center;gap:0.6rem;padding:0.35rem 0;">
+          <span style="color:var(--amber);font-weight:700;">✓</span> Preguntas numeradas con sus cuatro opciones
+        </li>
+        <li style="display:flex;align-items:center;gap:0.6rem;padding:0.35rem 0;">
+          <span style="color:var(--amber);font-weight:700;">✓</span> Los resultados también se exportan a Excel con nombre, DNI y nota
+        </li>
+        <li style="display:flex;align-items:center;gap:0.6rem;padding:0.35rem 0;">
+          <span style="color:var(--amber);font-weight:700;">✓</span> Timestamp de inicio y fin de cada alumno
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── COMPARISON ── -->
+<section>
+  <div class="reveal">
+    <p class="section-label">Comparativa</p>
+    <h2 class="section-title">¿Por qué no Google Forms<br>o Moodle?</h2>
+  </div>
+
+  <div class="reveal glass" style="margin-top:2rem;overflow-x:auto;border-radius:20px;">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th style="width:36%;">Funcionalidad</th>
+          <th class="ours">Tu Examen Digital</th>
+          <th class="theirs">Google Forms</th>
+          <th class="theirs">Moodle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>IA genera distractores automáticamente</td>
+          <td><span class="check">✓</span> Solo escribís pregunta + respuesta</td>
+          <td><span class="cross">✗</span> Todo manual</td>
+          <td><span class="cross">✗</span> Todo manual</td>
+        </tr>
+        <tr>
+          <td>Sin cuenta para el alumno</td>
+          <td><span class="check">✓</span> Solo un link</td>
+          <td><span class="cross">✗</span> Requiere Gmail</td>
+          <td><span class="cross">✗</span> Requiere cuenta</td>
+        </tr>
+        <tr>
+          <td>Anti-trampa con registro de faltas</td>
+          <td><span class="check">✓</span> Descuenta puntos automáticamente</td>
+          <td><span class="cross">✗</span> Sin control</td>
+          <td><span class="partial">Plugin pago</span></td>
+        </tr>
+        <tr>
+          <td>PDF imprimible del examen</td>
+          <td><span class="check">✓</span> Un clic</td>
+          <td><span class="cross">✗</span> No existe</td>
+          <td><span class="partial">Configuración compleja</span></td>
+        </tr>
+        <tr>
+          <td>Exportar resultados a Excel</td>
+          <td><span class="check">✓</span> Con nombre, DNI y nota</td>
+          <td><span class="partial">Solo Sheets</span></td>
+          <td><span class="partial">Configuración compleja</span></td>
+        </tr>
+        <tr>
+          <td>Bloqueo por DNI</td>
+          <td><span class="check">✓</span> Por sesión</td>
+          <td><span class="cross">✗</span> No existe</td>
+          <td><span class="cross">✗</span> No existe</td>
+        </tr>
+        <tr>
+          <td>Optimizado para celular</td>
+          <td><span class="check">✓</span> Diseñado para móvil</td>
+          <td><span class="partial">Funcional</span></td>
+          <td><span class="cross">✗</span> Pésima experiencia</td>
+        </tr>
+        <tr>
+          <td>Instalación / servidor</td>
+          <td><span class="check">✓</span> Nada que instalar</td>
+          <td><span class="check">✓</span> En la nube</td>
+          <td><span class="cross">✗</span> Servidor propio o pago</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── PRICING ── -->
+<section style="text-align:center;">
+  <div class="reveal">
+    <p class="section-label">Precio</p>
+    <h2 class="section-title">Simple y transparente.</h2>
+    <p class="section-body" style="margin:1rem auto 0;text-align:center;">
+      14 días de prueba gratis. Sin tarjeta. Sin letra chica.
+    </p>
+  </div>
+
+  <div class="pricing-card reveal">
+    <div class="plan-name">Plan Mensual Individual</div>
+    <div class="plan-price">$5.000</div>
+    <div class="plan-period">pesos argentinos por mes</div>
+    <div style="font-size:0.82rem;color:var(--text3);margin-bottom:0.6rem;">☕☕ Menos que 2 cafés por mes</div>
+    <div class="plan-trial">✓ 14 días gratis para empezar</div>
+    <ul class="plan-features">
+      <li>IA genera distractores por materia, automáticamente</li>
+      <li>Banco ilimitado de preguntas</li>
+      <li>Anti-trampa con registro de faltas y descuento de puntos</li>
+      <li>PDF imprimible del examen</li>
+      <li>Exportación de resultados a Excel y PDF</li>
+      <li>Bloqueo por DNI en cada sesión</li>
+      <li>Temporizador configurable</li>
+      <li>Soporte por WhatsApp</li>
+    </ul>
+    <a href="https://plataforma-examen-marcelo.web.app" class="btn-primary" style="width:100%;display:block;text-align:center;margin-top:2rem;font-size:1rem;padding:1.1rem;">🚀 Empezar prueba gratuita — 14 días gratis</a>
+    <a href="https://wa.me/5492634536344" class="btn-ghost" style="width:100%;display:block;text-align:center;margin-top:0.75rem;font-size:0.92rem;">💬 Quiero una demo primero</a>
+    <p style="font-size:0.78rem;color:var(--text3);text-align:center;margin-top:0.85rem;">Sin tarjeta de crédito · Sin letra chica · Cancelás cuando querés</p>
+  </div>
+</section>
+
+<!-- ── CTA FINAL ── -->
+<section style="text-align:center;padding-bottom:5rem;">
+  <div class="reveal">
+    <h2 class="section-title" style="margin-bottom:0.75rem;">¿Tenés dudas? Escribinos.</h2>
+    <p style="color:var(--text2);font-size:1rem;margin-bottom:2rem;font-weight:400;">
+      Respondemos por WhatsApp. También podemos hacer una demo en vivo para vos o para tu institución.
+    </p>
+    <a href="https://wa.me/5492634536344" class="btn-ghost" style="font-size:1rem;padding:1rem 2.5rem;">
+      💬 Contactar por WhatsApp
+    </a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <strong>Plataforma TIC — Edición Inteligente 2026</strong><br>
+  Desarrollado por <strong>Prof. Marcelo Fernández Mosri</strong><br>
+  <span style="font-size:0.72rem;opacity:0.5;">Argentina · Todos los derechos reservados</span>
+</footer>
+
+</div><!-- /content -->
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(a.getAttribute('href'));
+      if(t) t.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
